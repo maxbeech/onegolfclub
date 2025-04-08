@@ -1,18 +1,11 @@
 'use client';
+
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import Hero from '@/components/Hero';
-import { 
-  CalendarDaysIcon, 
-  HeartIcon, 
-  AcademicCapIcon, 
-  UserGroupIcon,
-  SparklesIcon,
-  ArrowRightIcon,
-} from '@heroicons/react/24/outline';
+import HeroSlider from '@/components/HeroSlider';
 
 // Animation components
 interface FadeInProps {
@@ -90,7 +83,7 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({
     offset: ["start end", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], [0, 300 * speed]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200 * speed]);
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
@@ -107,392 +100,305 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({
   );
 };
 
-// Services card component
-interface ServiceCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  link: string;
-  delay?: number;
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, link, delay = 0 }) => {
-  return (
-    <FadeIn delay={delay} direction="up" className="h-full">
-      <motion.div 
-        className="flex flex-col h-full bg-white rounded-xl shadow-sm hover:shadow-md p-6 transition-all duration-300 group"
-        whileHover={{ y: -5 }}
-      >
-        <div className="p-3 bg-emerald-50 rounded-xl w-fit mb-4 text-emerald-600">
-          {icon}
-        </div>
-        <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
-        <p className="text-gray-600 flex-grow mb-4">{description}</p>
-        <Link 
-          href={link} 
-          className="inline-flex items-center font-medium text-emerald-600 group-hover:text-emerald-700"
-        >
-          Learn more 
-          <motion.span 
-            className="ml-1 inline-block"
-            initial={{ x: 0 }}
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ArrowRightIcon className="w-4 h-4" />
-          </motion.span>
-        </Link>
-      </motion.div>
-    </FadeIn>
-  );
-};
-
 export default function Home() {
-  // Testimonials data
-  const testimonials = [
-    {
-      quote: "Bisley Base has been a second home for our children. The staff are incredible - so caring and attentive. Our kids absolutely love going there!",
-      author: "Sarah P.",
-      role: "Parent of Jack & Emily"
-    },
-    {
-      quote: "The preschool program is exceptional. Our daughter has thrived in the stimulating environment and caring atmosphere that Bisley Base provides.",
-      author: "Mark T.",
-      role: "Parent of Sophia"
-    },
-    {
-      quote: "As working parents, we rely on the wraparound care at Bisley Base. The flexibility, quality of care, and communication with parents is outstanding.",
-      author: "Emma & John H.",
-      role: "Parents of Oliver"
-    }
-  ];
-  
-  // Latest News data
-  const latestNews = [
-    {
-      title: "Summer Holiday Club Booking Now Open",
-      date: "May 15, 2024",
-      image: "/media/484871687_1066676745504882_7776977396599937926_n.jpg",
-      excerpt: "Secure your child's place in our action-packed summer holiday club with exciting activities, outdoor adventures, and creative fun.",
-      link: "/news/summer-holiday-club"
-    },
-    {
-      title: "Preschool Open Day Announced",
-      date: "April 30, 2024",
-      image: "/media/484902036_1066676725504884_4700747617186550414_n.jpg",
-      excerpt: "Join us for our upcoming Open Day to tour our facilities, meet our qualified staff, and learn about our preschool curriculum.",
-      link: "/news/preschool-open-day"
-    },
-    {
-      title: "New Forest School Activities Launch",
-      date: "April 12, 2024",
-      image: "/media/484918616_1066676722171551_1681522475451576546_n.jpg",
-      excerpt: "We're excited to introduce new forest school activities to our curriculum, fostering outdoor learning and exploration.",
-      link: "/news/forest-school-activities"
-    }
-  ];
-
   return (
-    <>
-      {/* Hero Section */}
-      <Hero />
-      
-      {/* About Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Welcome to Bisley Base
-                </h2>
-              </FadeIn>
-              <FadeIn delay={0.1}>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  Established in 2001, Bisley Base offers exceptional childcare and early education in the heart of Surrey. We provide a nurturing, stimulating environment where children can thrive, learn, and develop their unique potential.
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  Our qualified team is dedicated to providing high-quality care and education for children aged 2-11 years, with a range of services including preschool, breakfast club, after-school club, and holiday club programs.
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.3}>
-                <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <Link 
-                    href="/about" 
-                    className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors duration-300 text-center"
-                  >
-                    About Us
-                  </Link>
-                  <Link 
-                    href="/parents/admissions" 
-                    className="px-6 py-3 border border-emerald-600 text-emerald-600 font-medium rounded-md hover:bg-emerald-50 transition-colors duration-300 text-center"
-                  >
-                    Enroll Now
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-            <div className="relative">
-              <FadeIn delay={0.4} direction="left">
-                <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
-                  <Image 
-                    src="/media/484869461_1066673028838587_705034766726118684_n.jpg" 
-                    alt="Children playing at Bisley Base"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.6} direction="up">
-                <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
-                  <div className="flex items-center space-x-3 text-emerald-600">
-                    <SparklesIcon className="h-6 w-6" />
-                    <span className="font-semibold">Ofsted Outstanding</span>
-                  </div>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.7} direction="up">
-                <div className="absolute -top-6 -right-6 bg-white p-4 rounded-lg shadow-lg">
-                  <div className="flex items-center space-x-3 text-emerald-600">
-                    <HeartIcon className="h-6 w-6" />
-                    <span className="font-semibold">20+ Years Experience</span>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Our Services Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main>
+      {/* Hero Section with Video Slider */}
+      <HeroSlider 
+        title="Welcome to One Golf Club"
+        subtitle="The ultimate private members club offering premium playing privileges across over 50 golf courses under one membership"
+        ctaText="Become a Member"
+        ctaLink="/membership/join"
+      />
+
+      {/* Introduction Section */}
+      <section className="py-20 px-4 sm:px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our Programs & Services
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-semibold text-gray-900 mb-6">
+                <span className="text-golf-green-700">One</span> Golf Club
               </h2>
             </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="max-w-3xl mx-auto text-gray-600">
-                We offer a range of flexible childcare options to support families and nurture children's development
+            <FadeIn delay={0.2}>
+              <p className="max-w-4xl mx-auto text-lg text-gray-600 leading-relaxed">
+                One Golf Club is the ultimate private members club and event management company. The ethos and concept 
+                is to allow our members playing privileges across a wide variety of golf clubs under one membership 
+                and provide our corporate clients with use of our partner club's outstanding facilities, for hospitality 
+                and venue hire. One Golf Club provides their private members access to our Golf Concierge and in-house team, 
+                specialising in golf event management.
               </p>
             </FadeIn>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ServiceCard 
-              icon={<AcademicCapIcon className="h-8 w-8" />}
-              title="Preschool"
-              description="Our preschool program offers a stimulating environment for children aged 2-4 years, focusing on play-based learning and development."
-              link="/programs/preschool"
-              delay={0.2}
-            />
-            
-            <ServiceCard 
-              icon={<CalendarDaysIcon className="h-8 w-8" />}
-              title="After School Club"
-              description="Providing fun, supervised care for school-aged children with activities, healthy snacks, and homework support."
-              link="/programs/after-school"
-              delay={0.3}
-            />
-            
-            <ServiceCard 
-              icon={<UserGroupIcon className="h-8 w-8" />}
-              title="Breakfast Club"
-              description="Start the day right with our breakfast club, offering nutritious meals and engaging activities before school begins."
-              link="/programs/breakfast"
-              delay={0.4}
-            />
-            
-            <ServiceCard 
-              icon={<HeartIcon className="h-8 w-8" />}
-              title="Holiday Club"
-              description="Action-packed holiday programs full of fun activities, trips, and themed events during school breaks."
-              link="/programs/holiday-club"
-              delay={0.5}
-            />
-            
-            <ServiceCard 
-              icon={<SparklesIcon className="h-8 w-8" />}
-              title="Wraparound Care"
-              description="Flexible childcare solutions that wrap around school hours, designed to support working parents."
-              link="/programs/wraparound"
-              delay={0.6}
-            />
-            
-            <ServiceCard 
-              icon={<CalendarDaysIcon className="h-8 w-8" />}
-              title="Special Events"
-              description="Themed days, guest workshops, and seasonal celebrations that enrich our regular childcare programs."
-              link="/programs/special-events"
-              delay={0.7}
-            />
-          </div>
-        </div>
-      </section>
-      
-      {/* Testimonials Section */}
-      <section className="py-20 bg-emerald-600 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <svg width="100%" height="100%">
-            <pattern id="pattern-circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse">
-              <circle id="pattern-circle" cx="20" cy="20" r="3" fill="#fff"></circle>
-            </pattern>
-            <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"></rect>
-          </svg>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                What Parents Say
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="max-w-3xl mx-auto text-emerald-50">
-                Hear from the families who trust us with their children's care and education
-              </p>
-            </FadeIn>
-          </div>
-          
+
+          {/* Benefits Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <FadeIn key={index} delay={0.2 + index * 0.1} direction="up">
-                <div className="bg-white rounded-xl shadow-lg p-8 h-full flex flex-col">
-                  <div className="mb-4 text-emerald-500">
-                    <svg
-                      className="h-8 w-8"
-                      fill="currentColor"
-                      viewBox="0 0 32 32"
-                      aria-hidden="true"
-                    >
-                      <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 mb-6 flex-grow italic">"{testimonial.quote}"</p>
-                  <div className="mt-auto">
-                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
-                  </div>
+            <FadeIn delay={0.3} direction="up">
+              <div className="bg-white p-8 rounded-xl shadow-soft hover:shadow-gold transition-shadow duration-300 flex flex-col items-center text-center h-full">
+                <div className="bg-golf-green-100 p-4 rounded-full mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-golf-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
                 </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Latest News Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-            <div>
-              <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Latest News & Updates
-                </h2>
-              </FadeIn>
-              <FadeIn delay={0.1}>
-                <p className="text-gray-600">
-                  Stay updated with the latest happenings at Bisley Base
-                </p>
-              </FadeIn>
-            </div>
-            <FadeIn delay={0.2}>
-              <Link 
-                href="/news" 
-                className="mt-4 md:mt-0 inline-flex items-center font-medium text-emerald-600 hover:text-emerald-700"
-              >
-                View all news
-                <ArrowRightIcon className="ml-2 h-4 w-4" />
-              </Link>
-            </FadeIn>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestNews.map((item, index) => (
-              <FadeIn key={item.title} delay={0.3 + index * 0.1} direction="up">
-                <motion.div 
-                  className="bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden h-full flex flex-col transition-all duration-300"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6 flex flex-col flex-grow">
-                    <p className="text-sm text-emerald-600 mb-2">{item.date}</p>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 flex-grow">
-                      {item.excerpt}
-                    </p>
-                    <Link
-                      href={item.link}
-                      className="inline-flex items-center font-medium text-emerald-600 hover:text-emerald-700 mt-auto"
-                    >
-                      Read more
-                      <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Link>
-                  </div>
-                </motion.div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 relative">
-        <ParallaxImage
-          src="/media/484917025_1068052962033927_2729368767143192861_n.jpg"
-          alt="Children playing at Bisley Base"
-          className="absolute inset-0"
-          imgClassName="brightness-[0.25]"
-        />
-        
-        {/* Additional dark overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Ready to Join Our Bisley Base Family?
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="text-xl text-white/90 mb-8">
-                Take the first step in providing exceptional care and education for your child
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  href="/contact" 
-                  className="px-8 py-4 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors duration-300 text-center"
-                >
-                  Book a Tour
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">50+ Premium Courses</h3>
+                <p className="text-gray-600 mb-4">Access to over 50 prestigious golf courses across the UK under a single membership, with more being added regularly.</p>
+                <Link href="/courses" className="inline-flex items-center text-golf-green-700 font-medium hover:text-golf-green-800 transition-colors mt-auto">
+                  View Courses
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
                 </Link>
-                <Link 
-                  href="/parents/admissions" 
-                  className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-md hover:bg-white/20 transition-colors duration-300 text-center"
-                >
-                  Enrollment Information
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.4} direction="up">
+              <div className="bg-white p-8 rounded-xl shadow-soft hover:shadow-gold transition-shadow duration-300 flex flex-col items-center text-center h-full">
+                <div className="bg-golf-gold-100 p-4 rounded-full mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-golf-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">Corporate Hospitality</h3>
+                <p className="text-gray-600 mb-4">Exclusive corporate events and hospitality packages for clients and partners, with access to exceptional facilities.</p>
+                <Link href="/services/corporate-hospitality" className="inline-flex items-center text-golf-gold-600 font-medium hover:text-golf-gold-700 transition-colors mt-auto">
+                  Learn More
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </Link>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.5} direction="up">
+              <div className="bg-white p-8 rounded-xl shadow-soft hover:shadow-gold transition-shadow duration-300 flex flex-col items-center text-center h-full">
+                <div className="bg-golf-cream-100 p-4 rounded-full mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-golf-gold-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">Concierge Service</h3>
+                <p className="text-gray-600 mb-4">Premium concierge service with our in-house team specializing in golf event management and personalized experiences.</p>
+                <Link href="/services/concierge" className="inline-flex items-center text-golf-gold-800 font-medium hover:text-golf-gold-900 transition-colors mt-auto">
+                  Discover Services
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
                 </Link>
               </div>
             </FadeIn>
           </div>
         </div>
       </section>
-    </>
-  );
+
+      {/* Featured Course */}
+      <section className="py-20 px-4 sm:px-6 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <FadeIn direction="right">
+              <div className="relative">
+                <div className="absolute inset-0 -top-6 -left-6 rounded-xl bg-golf-green-700 z-0"></div>
+                <div className="absolute inset-0 -bottom-6 -right-6 rounded-xl border-2 border-golf-gold-400 z-0"></div>
+                <div className="relative z-10 overflow-hidden rounded-xl shadow-lg">
+                  <Image
+                    src="/media/pexels-betchtyblades-2480612.jpg"
+                    alt="Royal Ascot Golf Club"
+                    width={800}
+                    height={600}
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </FadeIn>
+            <FadeIn direction="left">
+              <div>
+                <div className="bg-golf-gold-400 inline-block px-4 py-1 rounded-full text-white text-xs font-semibold mb-4">
+                  FEATURED COURSE
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-display font-semibold text-gray-900 mb-6">
+                  OGC Collection: Royal Ascot GC
+                </h2>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  Rich in history and poised for the future, Royal Ascot Golf Club offers a rare mix of tradition and a fantastic golfing experience. As part of the OGC Collection, members enjoy preferential access to this prestigious course with its beautifully maintained fairways and challenging greens.
+                </p>
+                <div className="flex items-center mb-8">
+                  <div className="flex items-center mr-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-golf-gold-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="text-gray-700">Ascot, Berkshire</span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-golf-gold-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-gray-700">Established 1887</span>
+                  </div>
+                </div>
+                <Link 
+                  href="/courses/royal-ascot"
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-golf-green-700 hover:bg-golf-green-800 transition-all duration-300 shadow-md hover:scale-105"
+                >
+                  View Course Details
+                </Link>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* News Section */}
+      <section className="py-20 px-4 sm:px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <FadeIn>
+              <h2 className="text-3xl sm:text-4xl font-display font-semibold text-gray-900 mb-6">
+                News from <span className="text-golf-green-700">OGC</span>
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="max-w-3xl mx-auto text-lg text-gray-600">
+                Stay up to date with the latest news, events and course additions from One Golf Club
+              </p>
+            </FadeIn>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* News Item 1 */}
+            <FadeIn delay={0.3} direction="up">
+              <div className="bg-white rounded-xl shadow-soft overflow-hidden group h-full">
+                <div className="relative h-60 overflow-hidden">
+                  <Image
+                    src="/media/pexels-thomasleeward-2828723.jpg"
+                    alt="OGC Collection: Inspirations GC"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6 flex flex-col h-[calc(100%-15rem)]">
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900 hover:text-golf-green-700 transition-colors">
+                    <Link href="/news/inspirations-gc">OGC Collection: Inspirations GC</Link>
+                  </h3>
+                  <p className="text-gray-600 mb-4 flex-grow">
+                    Co-designed by Mackenzie and Ebert – Inspired by the greatest links holes in the UK
+                  </p>
+                  <Link href="/news/inspirations-gc" className="inline-flex items-center text-golf-green-700 font-medium hover:text-golf-green-800 transition-colors mt-auto">
+                    Read More
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* News Item 2 */}
+            <FadeIn delay={0.4} direction="up">
+              <div className="bg-white rounded-xl shadow-soft overflow-hidden group h-full">
+                <div className="relative h-60 overflow-hidden">
+                  <Image
+                    src="/media/pexels-markusspiske-104345.jpg"
+                    alt="OGC Collection: Clandon Regis GC"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6 flex flex-col h-[calc(100%-15rem)]">
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900 hover:text-golf-green-700 transition-colors">
+                    <Link href="/news/clandon-regis">OGC Collection: Clandon Regis GC</Link>
+                  </h3>
+                  <p className="text-gray-600 mb-4 flex-grow">
+                    The OGC Collection Welcomes Clandon Regis GC, the latest addition to our growing portfolio of exclusive courses.
+                  </p>
+                  <Link href="/news/clandon-regis" className="inline-flex items-center text-golf-green-700 font-medium hover:text-golf-green-800 transition-colors mt-auto">
+                    Read More
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* News Item 3 */}
+            <FadeIn delay={0.5} direction="up">
+              <div className="bg-white rounded-xl shadow-soft overflow-hidden group h-full">
+                <div className="relative h-60 overflow-hidden">
+                  <Image
+                    src="/media/pexels-jopwell-1325664.jpg"
+                    alt="OGC Welcomes Royal Navy Clearance Divers"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6 flex flex-col h-[calc(100%-15rem)]">
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900 hover:text-golf-green-700 transition-colors">
+                    <Link href="/news/royal-navy-divers">OGC Welcomes Royal Navy Clearance Divers</Link>
+                  </h3>
+                  <p className="text-gray-600 mb-4 flex-grow">
+                    Royal Navy Clearance Divers enjoy a round on the Carrick, Cameron House, Loch Lomond, courtesy of One Golf Club.
+                  </p>
+                  <Link href="/news/royal-navy-divers" className="inline-flex items-center text-golf-green-700 font-medium hover:text-golf-green-800 transition-colors mt-auto">
+                    Read More
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+          
+          <FadeIn delay={0.6}>
+            <div className="text-center mt-12">
+              <Link 
+                href="/news"
+                className="inline-flex items-center px-6 py-3 border border-golf-green-700 text-base font-medium rounded-md text-golf-green-700 bg-white hover:bg-golf-green-50 transition-all duration-300"
+              >
+                View All News
+              </Link>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-20 px-4 sm:px-6 bg-golf-green-800 relative overflow-hidden">
+        {/* Pattern overlay */}
+        <div className="absolute inset-0 bg-hero-pattern opacity-10 mix-blend-overlay pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center">
+            <FadeIn>
+              <h2 className="text-3xl sm:text-4xl font-display font-semibold text-white mb-6">
+                Join One Golf Club Today
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="max-w-3xl mx-auto text-lg text-golf-cream-100 mb-10">
+                Become a member of the UK's premier golf club network and gain access to over 50 
+                exceptional courses under one membership. Experience golf as it should be.
+              </p>
+            </FadeIn>
+            <FadeIn delay={0.4}>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link 
+                  href="/membership/join"
+                  className="px-8 py-4 bg-golf-gold-500 text-white font-medium rounded-md shadow-md hover:bg-golf-gold-600 hover:scale-105 transition-all duration-300"
+                >
+                  Become a Member
+                </Link>
+                <Link 
+                  href="/contact"
+                  className="px-8 py-4 border-2 border-white text-white font-medium rounded-md hover:bg-white/10 transition-all duration-300"
+                >
+                  Contact Us
+                </Link>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 } 

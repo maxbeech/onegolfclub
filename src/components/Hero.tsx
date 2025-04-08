@@ -47,7 +47,8 @@ const Hero = () => {
     <section className="relative h-screen overflow-hidden">
       {/* Media slider */}
       <div className="absolute inset-0">
-        {isClient && (
+        {/* Only render media content on client-side */}
+        {isClient ? (
           <>
             {/* Current media with fade effect */}
             <AnimatePresence mode="wait">
@@ -77,7 +78,7 @@ const Hero = () => {
                 ) : (
                   <Image
                     src={heroMedia[currentMediaIndex]}
-                    alt="Bisley Base childcare"
+                    alt="One Golf Club"
                     fill
                     className="object-cover"
                     priority
@@ -96,6 +97,9 @@ const Hero = () => {
               }}
             />
           </>
+        ) : (
+          // Placeholder during server-side rendering
+          <div className="absolute inset-0 bg-golf-green-900"></div>
         )}
       </div>
 
