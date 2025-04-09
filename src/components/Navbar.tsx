@@ -75,6 +75,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   // Handle scroll effect
   useEffect(() => {
@@ -184,7 +185,7 @@ const Navbar = () => {
       
       {/* Main Navigation */}
       <div className={`w-full transition-all duration-300 ${
-        isScrolled
+        isScrolled || !isHomePage
           ? 'bg-white/95 backdrop-blur-md shadow-md'
           : 'bg-transparent'
       }`}>
@@ -207,12 +208,12 @@ const Navbar = () => {
                 />
                 <div className="flex flex-col">
                   <span className={`text-xl font-display font-semibold tracking-tight transition-colors duration-300 ${
-                    isScrolled ? 'text-golf-green-800' : 'text-white'
+                    isScrolled || !isHomePage ? 'text-golf-green-800' : 'text-white'
                   }`}>
                     One Golf Club
                   </span>
                   <span className={`text-xs font-medium transition-colors duration-300 ${
-                    isScrolled ? 'text-golf-gold-600' : 'text-golf-gold-300'
+                    isScrolled || !isHomePage ? 'text-golf-gold-600' : 'text-golf-gold-300'
                   }`}>
                     Premium Golf Experience
                   </span>
@@ -229,10 +230,10 @@ const Navbar = () => {
                     href={item.href}
                     className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:scale-105 ${
                       pathname === item.href
-                        ? isScrolled
+                        ? isScrolled || !isHomePage
                           ? 'text-golf-green-800 bg-golf-green-50'
                           : 'text-white bg-white/10 backdrop-blur-sm'
-                        : isScrolled
+                        : isScrolled || !isHomePage
                           ? 'text-gray-800 hover:text-golf-green-700'
                           : 'text-white hover:bg-white/10'
                     }`}
@@ -246,10 +247,10 @@ const Navbar = () => {
                         <Popover.Button
                           className={`group inline-flex items-center px-3 py-2 text-sm font-medium rounded-md outline-none transition-all duration-300 hover:scale-105 ${
                             pathname?.startsWith(item.href)
-                              ? isScrolled
+                              ? isScrolled || !isHomePage
                                 ? 'text-golf-green-800 bg-golf-green-50'
                                 : 'text-white bg-white/10 backdrop-blur-sm'
-                              : isScrolled
+                              : isScrolled || !isHomePage
                                 ? 'text-gray-800 hover:text-golf-green-700'
                                 : 'text-white hover:bg-white/10'
                           }`}
@@ -259,7 +260,7 @@ const Navbar = () => {
                             className={`ml-1 h-4 w-4 transform transition-transform duration-200 ${
                               open ? 'rotate-180' : ''
                             } ${
-                              isScrolled ? 'text-golf-gold-600' : 'text-golf-gold-300'
+                              isScrolled || !isHomePage ? 'text-golf-gold-600' : 'text-golf-gold-300'
                             }`}
                             aria-hidden="true"
                           />
